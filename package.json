@@ -15,7 +15,7 @@
     "nativescript-nodeify": "^0.8.0",
     "nativescript-theme-core": "~1.0.4",
     "nativescript-vue": "~2.2.0",
-    "passu": "git+https://github.com/Winded/passu.git",
+    "passu-lib": "file:passu-lib",
     "tns-core-modules": "~5.3.0"
   },
   "devDependencies": {

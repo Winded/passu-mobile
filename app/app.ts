@@ -1,7 +1,6 @@
 import Vue from "nativescript-vue";
 
-require('nativescript-nodeify');
-import { PasswordDatabase } from 'passu/src/passu';
+import { PasswordDatabase } from 'passu-lib';
 
 import Home from "./components/Home";
 
