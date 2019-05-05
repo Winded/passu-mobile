@@ -1,3 +1,30 @@
 <resources>
     <string name="app_name">Passu</string>
+
+    <string name="choose_file">Select file</string>
+    <string name="new_file">New file</string>
+
+    <string name="open_file_readonly">Read-only</string>
+
+    <string name="title_activity_list_entries">Entries</string>
+
+    <string name="ok">OK</string>
+    <string name="open">Open</string>
+    <string name="save">Save</string>
+    <string name="search">Search</string>
+    <string name="close">Close</string>
+    <string name="copy">Copy</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+
+    <string name="label_name">Name</string>
+    <string name="label_password">Password</string>
+    <string name="label_description">Description</string>
+    <string name="label_policy_override">Policy</string>
+    <string name="label_policy_length">Length</string>
+    <string name="label_policy_lowercase">Lowercase</string>
+    <string name="label_policy_uppercase">Uppercase</string>
+    <string name="label_policy_numbers">Numbers</string>
+    <string name="label_policy_special">Special characters</string>
+    <string name="view_default_policy">Default policy</string>
 </resources>

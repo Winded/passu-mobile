@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="icon_size">32dp</dimen>
+    <dimen name="icon_option_size">24dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="medium_text">16sp</dimen>
+    <dimen name="large_text">22sp</dimen>
+</resources>
