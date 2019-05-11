@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipToPadding="false"
-    tools:context=".OpenFileActivity">
+    tools:context=".NewFileActivity">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -51,17 +50,10 @@
                 android:paddingLeft="4dp"
                 android:textSize="@dimen/medium_text"
                 android:text="[Select file]" />
-
-            <Button
-                android:id="@+id/file_browse_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="0"
-                android:onClick="onFileBrowsePress"
-                android:text="Browse" />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/file_password_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -89,6 +81,38 @@
                 android:layout_height="match_parent"
                 android:ems="10"
                 android:hint="Master password"
+                android:inputType="textPassword" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/file_password_layout">
+
+            <info.androidhive.fontawesome.FontTextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="1dp"
+                android:layout_weight="0"
+                android:gravity="center"
+                android:text="@string/fa_key_solid"
+                android:textColor="@color/icon_color"
+                android:textSize="@dimen/icon_size"
+                app:solid_icon="true" />
+
+            <EditText
+                android:id="@+id/file_password_repeat"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ems="10"
+                android:hint="Repeat password"
                 android:inputType="textPassword" />
 
         </LinearLayout>
@@ -127,15 +151,16 @@
                 android:buttonTint="@android:color/white"
                 android:checked="false"
                 android:text="@string/open_file_readonly"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:visibility="invisible"/>
 
             <Button
                 android:id="@+id/open_file_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="0.25"
-                android:onClick="onFileOpenPress"
-                android:text="@string/open" />
+                android:onClick="onFileCreatePress"
+                android:text="@string/create" />
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>
 

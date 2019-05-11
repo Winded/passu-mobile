@@ -20,6 +20,7 @@ import me.winded.passu.passu_mobile.PasswordDatabase;
 public class OpenFileActivity extends AppCompatActivity {
 
     private static final int FILE_SELECT_CODE = 0;
+    private static final int FILE_CREATE_CODE = 1;
 
     private TextView fileBrowseText;
     private EditText passwordInput;
@@ -37,7 +38,6 @@ public class OpenFileActivity extends AppCompatActivity {
                     Intent.createChooser(intent, "Select Password file"),
                     FILE_SELECT_CODE);
         } catch (android.content.ActivityNotFoundException ex) {
-            // Potentially direct the user to the Market with a Dialog
             Toast.makeText(this, "Please install a File Manager.",
                     Toast.LENGTH_SHORT).show();
         }
@@ -78,7 +78,17 @@ public class OpenFileActivity extends AppCompatActivity {
 
         switch(id) {
             case R.id.action_new_file:
-                // TODO
+                try {
+                    Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+                    intent.setType("*/*");
+                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+                    startActivityForResult(
+                            Intent.createChooser(intent, "Enter file name"),
+                            FILE_CREATE_CODE);
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(this, "Please install a File Manager.",
+                            Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
 
@@ -97,19 +107,27 @@ public class OpenFileActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode != RESULT_OK) {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+
         switch (requestCode) {
             case FILE_SELECT_CODE:
-                if (resultCode == RESULT_OK) {
-                    fileUri = data.getData();
+                fileUri = data.getData();
 
-                    try {
-                        fileBrowseText.setText(FileUtils.getFileNameFromPath(fileUri.getPath()));
-                    } catch(UnsupportedEncodingException ex) {
-                        fileBrowseText.setText("[Invalid file]");
-                    }
+                try {
+                    fileBrowseText.setText(FileUtils.getFileNameFromPath(fileUri.getPath()));
+                } catch(UnsupportedEncodingException ex) {
+                    fileBrowseText.setText("[Invalid file]");
                 }
                 break;
+            case FILE_CREATE_CODE:
+                Intent i = new Intent(this, NewFileActivity.class);
+                i.setData(data.getData());
+                startActivity(i);
+                break;
         }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 }

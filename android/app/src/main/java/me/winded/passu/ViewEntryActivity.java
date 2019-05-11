@@ -5,22 +5,22 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v4.content.ContextCompat;
+import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import info.androidhive.fontawesome.FontDrawable;
 import me.winded.passu.passu_mobile.PasswordDatabase;
 import me.winded.passu.passu_mobile.PasswordEntry;
 import me.winded.passu.passu_mobile.PasswordPolicy;
 
 public class ViewEntryActivity extends AppCompatActivity {
+    public static final int UPDATE_CODE = 0;
 
     private class CopyOnClickListener implements DialogInterface.OnClickListener {
         public CopyOnClickListener(Context context, String value) {
@@ -90,10 +90,12 @@ public class ViewEntryActivity extends AppCompatActivity {
 
         switch(id) {
             case R.id.action_edit:
-                // TODO
+                Intent i = new Intent(this, EditEntryActivity.class);
+                i.putExtra("EXTRA_ENTRY_NAME", entry.getName());
+                startActivityForResult(i, UPDATE_CODE);
                 break;
             case R.id.action_delete:
-                // TODO
+                deleteEntry();
                 break;
         }
 
@@ -114,23 +116,43 @@ public class ViewEntryActivity extends AppCompatActivity {
         policyUppercaseText = findViewById(R.id.policy_uppercase_text);
         policyNumbersText = findViewById(R.id.policy_numbers_text);
         policySpecialText = findViewById(R.id.policy_special_text);
+    }
 
-        String entryName = getIntent().getStringExtra("EXTRA_ENTRY_NAME");
-        PasswordDatabase db = ((PassuApplication)getApplication()).getPasswordDatabase();
-        if(entryName == null || db == null) {
-            throw new NullPointerException();
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        updateData();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        switch(requestCode) {
+            case UPDATE_CODE:
+                getIntent().putExtra("EXTRA_ENTRY_NAME", data.getStringExtra("EXTRA_ENTRY_NAME"));
+                break;
         }
 
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void updateData() {
         try {
-            entry = db.getEntry(entryName);
-            updateTexts();
+            String entryName = getIntent().getStringExtra("EXTRA_ENTRY_NAME");
+            setTitle(entryName);
+            loadData(entryName);
         } catch(Exception ex) {
             setTitle("[Invalid entry]");
         }
     }
 
-    private void updateTexts() {
-        setTitle(entry.getName());
+    private void loadData(String entryName) throws Exception {
+        PasswordDatabase db = ((PassuApplication)getApplication()).getPasswordDatabase();
+        if(entryName == null || db == null) {
+            throw new NullPointerException();
+        }
+
+        entry = db.getEntry(entryName);
 
         nameText.setText(entry.getName());
         passwordText.setText(String.format("(%s characters)", entry.getPassword().length()));
@@ -145,5 +167,33 @@ public class ViewEntryActivity extends AppCompatActivity {
         policyUppercaseText.setText(policy.hasUseUppercase() ? (policy.getUseUppercase() ? sTrue : sFalse) : "(default)");
         policyNumbersText.setText(policy.hasUseNumbers() ? (policy.getUseNumbers() ? sTrue : sFalse) : "(default)");
         policySpecialText.setText(policy.hasUseSpecial() ? (policy.getUseSpecial() ? sTrue : sFalse) : "(default)");
+    }
+
+    private void deleteEntry() {
+        final Context ctx = this;
+
+        // Use the Builder class for convenient dialog construction
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to delete " + entry.getName() + "?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        try {
+                            PasswordDatabase db = ((PassuApplication)getApplication()).getPasswordDatabase();
+                            db.removeEntry(entry.getName());
+                            Toast.makeText(ctx, "Entry removed", Toast.LENGTH_SHORT).show();
+                            finish();
+                        } catch(Exception ex) {
+                            Toast.makeText(ctx, "ERROR: " + ex.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+
+        // Create the AlertDialog object and return it
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

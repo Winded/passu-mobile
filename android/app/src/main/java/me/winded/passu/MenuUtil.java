@@ -24,7 +24,9 @@ public class MenuUtil {
     }
 
     public static void setIconDisabled(Context context, Menu menu, int itemId) {
-        FontDrawable drawable = (FontDrawable)menu.getItem(itemId).getIcon();
+        MenuItem item = menu.getItem(itemId);
+        item.setEnabled(false);
+        FontDrawable drawable = (FontDrawable)item.getIcon();
         drawable.setTextColor(ContextCompat.getColor(context, R.color.icon_color_disabled));
     }
 }

@@ -1,4 +1,4 @@
-// passu_mobile implements a gobind-friendly interface for passu-lib, so it can be used from Java/ObjC
+// passu_mobile implements a gobind-friendly wrapper for passu-lib, so it can be used from Java/ObjC
 package passu_mobile
 
 import (
@@ -42,13 +42,12 @@ func PasswordDatabaseFromFile(fileHandle IFileHandle, password string) (*Passwor
 	if err != nil {
 		return nil, err
 	}
+	defer r.Close()
 
 	bytes, err := r.Read()
 	if err != nil {
 		return nil, err
 	}
-
-	r.Close()
 
 	db, err := passulib.PasswordDatabaseFromData(bytes, password)
 	if err != nil {
@@ -63,12 +62,27 @@ func PasswordDatabaseFromFile(fileHandle IFileHandle, password string) (*Passwor
 	return dbHandle, nil
 }
 
+func NewPasswordDatabase(fileHandle IFileHandle, password string) *PasswordDatabase {
+	return &PasswordDatabase{
+		db:         passulib.NewPasswordDatabase(password),
+		fileHandle: fileHandle,
+	}
+}
+
 func (this *PasswordDatabase) IsModified() bool {
 	return this.db.Modified
 }
 
 func (this *PasswordDatabase) GetFileHandle() IFileHandle {
 	return this.fileHandle
+}
+
+func (this *PasswordDatabase) GetDefaultPolicy() *PasswordPolicy {
+	return &PasswordPolicy{this.db.GetDefaultPolicy()}
+}
+
+func (this *PasswordDatabase) SetDefaultPolicy(updatedPolicy *PasswordPolicy) error {
+	return this.db.SetDefaultPolicy(updatedPolicy.p)
 }
 
 func (this *PasswordDatabase) GetEntryNames(filter string) *util.StringArray {
@@ -94,6 +108,45 @@ func (this *PasswordDatabase) GetEntry(name string) (*PasswordEntry, error) {
 		return nil, errors.New("Entry not found")
 	}
 	return &PasswordEntry{entry}, nil
+}
+
+func (this *PasswordDatabase) AddEntry(entry *PasswordEntry) error {
+	return this.db.AddEntry(entry.e)
+}
+
+func (this *PasswordDatabase) UpdateEntry(name string, updatedEntry *PasswordEntry) error {
+	return this.db.UpdateEntry(name, updatedEntry.e)
+}
+
+func (this *PasswordDatabase) RemoveEntry(name string) error {
+	_, err := this.db.RemoveEntry(name)
+	return err
+}
+
+func (this *PasswordDatabase) GeneratePassword(entryName string) (*PasswordEntry, error) {
+	entry, err := this.db.GeneratePassword(entryName)
+	if err == nil {
+		return &PasswordEntry{entry}, nil
+	} else {
+		return nil, err
+	}
+}
+
+func (this *PasswordDatabase) Save() error {
+	bytes := this.db.Save()
+
+	w, err := this.fileHandle.OpenWriter()
+	if err != nil {
+		return err
+	}
+	defer w.Close()
+
+	err = w.Write(bytes)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 type PasswordEntry struct {

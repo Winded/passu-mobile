@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:labelFor="@id/length_text"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/large_text"
+            android:text="@string/label_policy_length" />
+
+        <EditText
+            android:id="@+id/length_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ems="10"
+            android:hint="(default)"
+            android:inputType="numberSigned" />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:labelFor="@id/lowercase_spinner"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/large_text"
+            android:text="@string/label_policy_lowercase" />
+
+        <Spinner
+            android:id="@+id/lowercase_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:labelFor="@id/uppercase_spinner"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/large_text"
+            android:text="@string/label_policy_uppercase" />
+
+        <Spinner
+            android:id="@+id/uppercase_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:labelFor="@id/numbers_spinner"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/large_text"
+            android:text="@string/label_policy_numbers" />
+
+        <Spinner
+            android:id="@+id/numbers_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:labelFor="@id/special_spinner"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/large_text"
+            android:text="@string/label_policy_special" />
+
+        <Spinner
+            android:id="@+id/special_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+
+    </TableRow>
+
+</TableLayout>

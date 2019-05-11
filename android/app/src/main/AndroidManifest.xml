@@ -2,9 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="me.winded.passu">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
     <application
         android:name=".PassuApplication"
         android:allowBackup="true"
@@ -14,10 +11,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ViewEntryActivity"></activity>
+            android:name=".NewFileActivity"
+            android:label="@string/title_activity_new_file" />
+        <activity
+            android:name=".NewEntryActivity"
+            android:label="@string/title_activity_new_entry" />
+        <activity android:name=".ViewEntryActivity" />
+        <activity android:name=".EditEntryActivity" />
+        <activity
+            android:name=".DefaultPolicyActivity"
+            android:label="@string/view_default_policy" />
         <activity
             android:name=".ListEntriesActivity"
-            android:label="@string/title_activity_list_entries"></activity>
+            android:label="@string/title_activity_list_entries" />
         <activity android:name=".OpenFileActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

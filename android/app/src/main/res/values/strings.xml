@@ -7,6 +7,8 @@
     <string name="open_file_readonly">Read-only</string>
 
     <string name="title_activity_list_entries">Entries</string>
+    <string name="title_activity_new_entry">New entry</string>
+    <string name="title_activity_new_file">New file</string>
 
     <string name="ok">OK</string>
     <string name="open">Open</string>
@@ -16,9 +18,12 @@
     <string name="copy">Copy</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="create">Create</string>
 
     <string name="label_name">Name</string>
     <string name="label_password">Password</string>
+    <string name="label_password_generate">Password (Leave empty to generate)</string>
     <string name="label_description">Description</string>
     <string name="label_policy_override">Policy</string>
     <string name="label_policy_length">Length</string>
@@ -27,4 +32,10 @@
     <string name="label_policy_numbers">Numbers</string>
     <string name="label_policy_special">Special characters</string>
     <string name="view_default_policy">Default policy</string>
+
+    <string-array name="policy_spinner_options">
+        <item>Enabled</item>
+        <item>Disabled</item>
+        <item>(default)</item>
+    </string-array>
 </resources>

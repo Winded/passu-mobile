@@ -14,8 +14,11 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import info.androidhive.fontawesome.FontDrawable;
+import me.winded.passu.passu_mobile.IFileHandle;
+import me.winded.passu.passu_mobile.IWriter;
 import me.winded.passu.passu_mobile.PasswordDatabase;
 import me.winded.passu.util.StringArray;
 
@@ -26,6 +29,8 @@ public class ListEntriesActivity extends AppCompatActivity implements PasswordEn
     private StringArray dataset;
 
     public void onAddEntryPress(View view) {
+        Intent i = new Intent(this, NewEntryActivity.class);
+        startActivity(i);
     }
 
     @Override
@@ -52,13 +57,20 @@ public class ListEntriesActivity extends AppCompatActivity implements PasswordEn
                 // TODO
                 break;
             case R.id.action_save:
-                // TODO
+                PasswordDatabase db = ((PassuApplication)getApplication()).getPasswordDatabase();
+                try {
+                    db.save();
+                    Toast.makeText(this, "Saved", Toast.LENGTH_LONG).show();
+                } catch(Exception ex) {
+                    Toast.makeText(this, "ERROR: " + ex.getMessage(), Toast.LENGTH_LONG).show();
+                }
                 break;
             case R.id.action_close:
                 closeApp();
                 break;
             case R.id.action_default_policy:
-                // TODO
+                Intent i = new Intent(this, DefaultPolicyActivity.class);
+                startActivity(i);
                 break;
         }
 
@@ -95,11 +107,24 @@ public class ListEntriesActivity extends AppCompatActivity implements PasswordEn
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_entries);
 
+        recyclerView = findViewById(R.id.recycler_view);
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         dataset = null;
         PasswordDatabase db = ((PassuApplication)getApplication()).getPasswordDatabase();
         if(db != null) {
             dataset = db.getEntryNames("");
         }
+        mAdapter = new PasswordEntryAdapter(dataset, this);
+        recyclerView.setAdapter(mAdapter);
 
         FloatingActionButton fab = findViewById(R.id.add_button);
         if(db.getFileHandle().isReadOnly()) {
@@ -109,13 +134,6 @@ public class ListEntriesActivity extends AppCompatActivity implements PasswordEn
             drawable.setTextColor(ContextCompat.getColor(this, R.color.icon_color_light));
             fab.setImageDrawable(drawable);
         }
-
-        recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new PasswordEntryAdapter(dataset, this);
-        recyclerView.setAdapter(mAdapter);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
     private void closeApp() {
